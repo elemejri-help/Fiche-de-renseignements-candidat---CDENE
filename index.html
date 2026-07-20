@@ -167,15 +167,20 @@
             <label><input type="radio" name="connait_personne" value="Non"> Non</label>
             <label><input type="radio" name="connait_personne" value="Oui"> Oui</label>
           </div>
-          <div id="connaitDetails" class="grid" style="display:none; margin-top:12px;">
-            <div class="field">
-              <label>Nom de la personne</label>
-              <input type="text" name="connait_nom" placeholder="Nom et prénom de la personne">
+          <div id="connaitDetails" style="display:none; margin-top:12px;">
+            <div id="connaitListe">
+              <div class="connait-item grid" style="align-items:end;">
+                <div class="field">
+                  <label>Nom de la personne</label>
+                  <input type="text" name="connait_nom[]" placeholder="Nom et prénom de la personne">
+                </div>
+                <div class="field">
+                  <label>Relation avec le candidat</label>
+                  <input type="text" name="connait_relation[]" placeholder="Ex : Ami, Ancien collègue, Famille...">
+                </div>
+              </div>
             </div>
-            <div class="field">
-              <label>Titre / poste de la personne</label>
-              <input type="text" name="connait_titre" placeholder="Ex : Directeur, Agent, Collègue...">
-            </div>
+            <button type="button" id="btnAjouterPersonne" class="btn-add-personne">+ Ajouter une personne</button>
           </div>
         </div>
 
@@ -268,6 +273,6 @@ J’autorise le CDÉNÉ à procéder aux vérifications d’usage dans le cadre 
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="script.js?v=2"></script>
+  <script src="script.js?v=3"></script>
 </body>
 </html>

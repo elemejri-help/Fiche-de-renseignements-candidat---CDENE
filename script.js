@@ -140,6 +140,7 @@ async function generatePdf() {
     document.body.appendChild(wrapper);
 
     clearEmptyPlaceholdersForPdf(formClone);
+    formClone.querySelectorAll('.btn-add-personne, .btn-remove-personne').forEach((b) => b.remove());
     convertTextareasForPdf(formClone);
     convertChecksForPdf(formClone);
     await new Promise((resolve) => requestAnimationFrame(resolve));
@@ -225,20 +226,48 @@ function limitExpTableTextareasToThreeLines() {
 function setupConnaitPersonneToggle() {
   const radios = document.querySelectorAll('input[name="connait_personne"]');
   const details = document.getElementById('connaitDetails');
-  if (!radios.length || !details) return;
+  const liste = document.getElementById('connaitListe');
+  const btnAjouter = document.getElementById('btnAjouterPersonne');
+  if (!radios.length || !details || !liste) return;
 
   const update = () => {
     const selected = document.querySelector('input[name="connait_personne"]:checked');
     if (selected && selected.value === 'Oui') {
-      details.style.display = 'grid';
+      details.style.display = 'block';
     } else {
       details.style.display = 'none';
-      // Vider les champs si l'utilisateur repasse à "Non"
-      details.querySelectorAll('input').forEach((inp) => { inp.value = ''; });
+      // Repasse à "Non" : ne garder qu'une ligne vide
+      const items = liste.querySelectorAll('.connait-item');
+      items.forEach((item, i) => {
+        if (i === 0) {
+          item.querySelectorAll('input').forEach((inp) => { inp.value = ''; });
+        } else {
+          item.remove();
+        }
+      });
     }
   };
 
+  const ajouterPersonne = () => {
+    const item = document.createElement('div');
+    item.className = 'connait-item grid';
+    item.style.alignItems = 'end';
+    item.innerHTML =
+      '<div class="field">' +
+      '<label>Nom de la personne</label>' +
+      '<input type="text" name="connait_nom[]" placeholder="Nom et prénom de la personne">' +
+      '</div>' +
+      '<div class="field" style="position:relative;">' +
+      '<label>Relation avec le candidat</label>' +
+      '<input type="text" name="connait_relation[]" placeholder="Ex : Ami, Ancien collègue, Famille...">' +
+      '<button type="button" class="btn-remove-personne" title="Supprimer">&times;</button>' +
+      '</div>';
+    liste.appendChild(item);
+    item.querySelector('.btn-remove-personne').addEventListener('click', () => item.remove());
+  };
+
   radios.forEach((r) => r.addEventListener('change', update));
+  if (btnAjouter) btnAjouter.addEventListener('click', ajouterPersonne);
   update();
 }
 
