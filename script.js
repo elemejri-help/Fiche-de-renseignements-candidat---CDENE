@@ -222,6 +222,27 @@ function limitExpTableTextareasToThreeLines() {
   });
 }
 
+function setupConnaitPersonneToggle() {
+  const radios = document.querySelectorAll('input[name="connait_personne"]');
+  const details = document.getElementById('connaitDetails');
+  if (!radios.length || !details) return;
+
+  const update = () => {
+    const selected = document.querySelector('input[name="connait_personne"]:checked');
+    if (selected && selected.value === 'Oui') {
+      details.style.display = 'grid';
+    } else {
+      details.style.display = 'none';
+      // Vider les champs si l'utilisateur repasse à "Non"
+      details.querySelectorAll('input').forEach((inp) => { inp.value = ''; });
+    }
+  };
+
+  radios.forEach((r) => r.addEventListener('change', update));
+  update();
+}
+
+setupConnaitPersonneToggle();
 limitExpTableTextareasToThreeLines();
 const btnPDF = document.getElementById('btnDownloadPDF');
 if (btnPDF) btnPDF.addEventListener('click', generatePdf);
